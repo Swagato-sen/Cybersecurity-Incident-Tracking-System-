@@ -1,1 +1,76 @@
+CREATE TABLE user_management (
+    user_id NUMBER(38) PRIMARY KEY,
+    username VARCHAR2(50),
+    password VARCHAR2(100),
+    email VARCHAR2(100),
+    role VARCHAR2(50),
+    registration_date DATE
+);
+
+
+CREATE TABLE incidents (
+    incident_id NUMBER(38) PRIMARY KEY,
+    incident_title VARCHAR2(100),
+    incident_description VARCHAR2(255),
+    incident_date DATE,
+    severity VARCHAR2(50),
+    status VARCHAR2(50)
+);
+
+
+CREATE TABLE incident_classification (
+    classification_id NUMBER(38) PRIMARY KEY,
+    incident_id NUMBER(38),
+    classification VARCHAR2(50),
+    FOREIGN KEY (incident_id) REFERENCES incidents (incident_id)
+);
+
+
+CREATE TABLE investigation (
+    investigation_id NUMBER(38) PRIMARY KEY,
+    incident_id NUMBER(38),
+    investigator VARCHAR2(50),
+    start_date DATE,
+    end_date DATE,
+    findings VARCHAR2(255),
+    FOREIGN KEY (incident_id) REFERENCES incidents (incident_id)
+);
+
+
+CREATE TABLE resolution_tasks (
+    task_id NUMBER(38) PRIMARY KEY,
+    incident_id NUMBER(38),
+    task_description VARCHAR2(255),
+    assigned_to VARCHAR2(50),
+    due_date DATE,
+    completion_date DATE,
+    status VARCHAR2(50),
+    FOREIGN KEY (incident_id) REFERENCES incidents (incident_id)
+);
+
+
+CREATE TABLE incident_reports (
+    report_id NUMBER(38) PRIMARY KEY,
+    incident_id NUMBER(38),
+    report_title VARCHAR2(100),
+    report_content VARCHAR2(255),
+    FOREIGN KEY (incident_id) REFERENCES incidents (incident_id)
+);
+
+
+CREATE TABLE security_logs (
+    log_id NUMBER(38) PRIMARY KEY,
+    incident_id NUMBER(38),
+    log_content VARCHAR2(255),
+    FOREIGN KEY (incident_id) REFERENCES incidents (incident_id)
+);
+
+
+CREATE TABLE audit_logs (
+    log_id NUMBER(38) PRIMARY KEY,
+    user_id NUMBER(38),
+    action VARCHAR2(50),
+    timestamp DATE,
+    FOREIGN KEY (user_id) REFERENCES user_management (user_id)
+);
 
